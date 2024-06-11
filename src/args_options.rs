@@ -8,8 +8,9 @@ use clap::Parser;
     author = env!("CARGO_PKG_AUTHORS")
 )]
 pub struct Args {
-    /// Specify one or more canister names to generate Candid files, or use '.'
-    /// to target the current canister in the working directory or its
-    /// subdirectories. Each canister name should be provided as a separate argument.
-    pub canisters_names: Vec<String>,
+    /// Specify one or more canister names to generate Candid files.
+    /// Each canister name should be provided as a separate argument.
+    /// If no canister name is passed, this will generate
+    /// the Candid files for every rust canister of the project.
+    pub canisters_names: Option<Vec<String>>,
 }
