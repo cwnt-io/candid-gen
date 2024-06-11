@@ -6,11 +6,9 @@
 
 <!-- tocstop -->
 
-- [ ] [[basicrustbinaryproject-issue]]
-- [x] [[basicconfigsetup-issue]]
-
 ## Backlog
 
+- [ ] test layer
 - [ ] generate readme
 - [ ] publish crates.io
   - https://doc.rust-lang.org/cargo/reference/publishing.html
