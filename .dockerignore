@@ -1,0 +1,40 @@
+# Ignore version control directories
+.git/
+.svn/
+.hg/
+brag-server-data/
+data/
+
+# Ignore all log files and temp files
+*.log
+tmp/
+
+# Ignore build artifacts
+target/
+**/*.rs.bk
+
+# Ignore default sample files
+# Cargo.lock
+# **/Cargo.lock
+
+# Ignore backup files
+*.swp
+*~
+
+# Ignore IDE and text editor folders
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Ignore environment specific files
+.env
+.env.local
+
+# Ignore Docker related files
+Dockerfile
+.dockerignore
+
+# Ignore other unnecessary files
+README.md
+LICENSE
+*.md
