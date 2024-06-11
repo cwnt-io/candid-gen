@@ -10,7 +10,11 @@ authors = ["cwnt.io", "Gustavo Basso <gubasso@cwnt.io>", "Ismael Pamplona <isma@
 license-file = "LICENSE"
 # homepage = "https://github.com/cwnt-io/candid-gen"
 repository = "https://github.com/cwnt-io/candid-gen"
-keywords = ["issue", "tracker", "git", "project", "management"]
+keywords = ["candid", "canister", "internet-computer", "idl", "tools"]
+categories = ["command-line-utilities", "development-tools", "config", "wasm"]
+
+[package.metadata.release]
+allow-branch = ["master","staging", "develop"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
