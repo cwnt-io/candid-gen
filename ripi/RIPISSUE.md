@@ -6,7 +6,6 @@
 
 <!-- tocstop -->
 
-- verify if target wasm32-unknown-unknown is there
 - input:
   - none: if no parameter is passed, create a candid for every rust canister in the project
   - N: receive list of canisters to build

@@ -21,6 +21,7 @@ allow-branch = ["master","staging", "develop"]
 [dependencies]
 anyhow = "1.0.86"
 clap = { version = "4.5.7", features = ["derive"] }
+cmd_lib = "1.9.4"
 
 [dev-dependencies]
 assert_cmd = "2.0.14"

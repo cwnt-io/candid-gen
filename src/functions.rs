@@ -4,6 +4,27 @@ use std::{
 };
 
 use anyhow::{anyhow, Context, Result};
+use cmd_lib::run_fun;
+
+pub fn check_dependencies() -> Result<()> {
+    if let Err(e) = run_fun!(rustup --version 2> /dev/null) {
+        return Err(anyhow!("rustup command is not available: {}", e));
+    }
+    if let Err(e) = run_fun!(cargo - -version) {
+        return Err(anyhow!("cargo command is not available: {}", e));
+    }
+    if let Err(e) = run_fun!(candid - extractor - -version) {
+        return Err(anyhow!("candid-extractor command is not available: {}", e));
+    }
+
+    let installed_targets = run_fun!(rustup target list --installed)?;
+    if !installed_targets.contains("wasm32-unknown-unknown") {
+        return Err(anyhow!(
+            "rustup doesn't have the target wasm32-unknown-unknown installed"
+        ));
+    }
+    Ok(())
+}
 
 pub fn get_project_root() -> Result<PathBuf> {
     let curr_dir = current_dir().context("Failed to get current directory")?;
