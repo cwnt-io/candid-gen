@@ -6,6 +6,15 @@
 
 <!-- tocstop -->
 
+- verify if target wasm32-unknown-unknown is there
+- input:
+  - none: if no parameter is passed, create a candid for every rust canister in the project
+  - N: receive list of canisters to build
+    - string or '.'
+- validade input each list item
+- build a vec of canisters (validated)
+- create the candid for each one
+
 ## Backlog
 
 - [ ] test layer
