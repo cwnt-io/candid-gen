@@ -9,10 +9,20 @@ use serde::{
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RustCanisterCfg {
-    package: String,
+    pub package: String,
     pub candid: String,
     #[serde(flatten)]
-    other: HashMap<String, serde_json::Value>,
+    pub other: HashMap<String, serde_json::Value>,
+}
+
+impl RustCanisterCfg {
+    pub fn new(canister_name: &str) -> Self {
+        RustCanisterCfg {
+            package: canister_name.to_owned(),
+            candid: format!("src/{}/{}.did", canister_name, canister_name),
+            other: HashMap::default(),
+        }
+    }
 }
 
 #[derive(Debug, Serialize)]
