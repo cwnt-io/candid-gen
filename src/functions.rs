@@ -8,14 +8,15 @@ use cmd_lib::run_fun;
 
 use crate::dfx_cfg::RustCanisterCfg;
 
+#[rustfmt::skip]
 pub fn check_dependencies() -> Result<()> {
     if let Err(e) = run_fun!(rustup --version 2> /dev/null) {
         return Err(anyhow!("rustup command is not available: {}", e));
     }
-    if let Err(e) = run_fun!(cargo - -version) {
+    if let Err(e) = run_fun!(cargo --version) {
         return Err(anyhow!("cargo command is not available: {}", e));
     }
-    if let Err(e) = run_fun!(candid - extractor - -version) {
+    if let Err(e) = run_fun!(candid-extractor --version) {
         return Err(anyhow!("candid-extractor command is not available: {}", e));
     }
 

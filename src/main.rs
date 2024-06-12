@@ -28,15 +28,34 @@ fn main() -> Result<()> {
             .fold(HashMap::new(), |mut map, name| {
                 if let Some(canister) = canisters.get(name) {
                     map.insert(name.clone(), canister.clone());
+                } else {
+                    eprintln!(
+                        "candid-gen error: Not able to generate the candid file for the canister: {}.\n\
+                        Verify if it is a 'rust' canister type, or if the name is correct.\n",
+                        name
+                    );
                 }
                 map
             }),
         None => canisters,
     };
     for (canister_name, canister) in canisters_to_gen_candid.iter() {
-        run_cmd!(cargo build --release --target wasm32-unknown-unknown --package "$canister_name")?;
+        if let Err(e) = run_cmd!(cargo build --release --target wasm32-unknown-unknown --package "$canister_name")
+        {
+            eprintln!("Failed to build the canister '{}': {}", canister_name, e);
+            continue;
+        }
         let candid = get_candid_path_str(&project_root, canister)?;
-        run_cmd!(candid-extractor "target/wasm32-unknown-unknown/release/$canister_name.wasm" > "$candid")?;
+        if let Err(e) = run_cmd!(
+            candid-extractor
+            "target/wasm32-unknown-unknown/release/$canister_name.wasm" >
+            "$candid")
+        {
+            eprintln!(
+                "Failed to extract candid for the canister '{}': {}",
+                canister_name, e
+            );
+        }
     }
     Ok(())
 }
