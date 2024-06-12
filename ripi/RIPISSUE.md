@@ -64,6 +64,7 @@ static DFX_CFG: &str = r#"
 
 ## Backlog
 
+- integrate/fork from candid-extractor?
 - candid-gen homepage
 - add more validation to deserialize dfxcfg?
   - if package == canister key, for example

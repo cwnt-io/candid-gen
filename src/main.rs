@@ -45,6 +45,10 @@ fn main() -> Result<()> {
             eprintln!("Failed to build the canister '{}': {}", canister_name, e);
             continue;
         }
+        println!(
+            "candid-gen: Canister '{}' built successfully.",
+            canister_name
+        );
         let candid = get_candid_path_str(&project_root, canister)?;
         if let Err(e) = run_cmd!(
             candid-extractor
@@ -56,6 +60,10 @@ fn main() -> Result<()> {
                 canister_name, e
             );
         }
+        println!(
+            "candid-gen: Canister '{}' candid file was successfully generated.",
+            canister_name
+        );
     }
     Ok(())
 }
