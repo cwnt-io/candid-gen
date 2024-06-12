@@ -8,6 +8,22 @@
             "package": "counter_backend",
             "type": "rust"
         },
+        "counter_backend2": {
+            "candid": "src/counter_backend/counter_backend.did",
+            "declarations": {
+                "node_compatibility": true
+            },
+            "package": "counter_backend",
+            "type": "rust"
+        },
+        "counter_backend3": {
+            "candid": "src/counter_backend/counter_backend.did",
+            "declarations": {
+                "node_compatibility": true
+            },
+            "package": "counter_backend",
+            "type": "mokoto"
+        },
         "counter_frontend": {
             "dependencies": [
                 "counter_backend"

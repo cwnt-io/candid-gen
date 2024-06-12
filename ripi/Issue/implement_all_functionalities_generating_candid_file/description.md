@@ -1,0 +1,1 @@
+# implement_all_functionalities_generating_candid_file (Issue)
