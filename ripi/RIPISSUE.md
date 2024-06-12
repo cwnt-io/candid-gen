@@ -6,7 +6,7 @@
 
 <!-- tocstop -->
 
-- [ ] add message (info) if arg is not
+- [ ] add message info if arg is not some cases
   - a valid canister
   - a rust canister
 - [ ] test layer
