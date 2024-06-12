@@ -6,9 +6,7 @@
 
 <!-- tocstop -->
 
-- [ ] add message info if arg is not some cases
-  - a valid canister
-  - a rust canister
+- [ ] [[addmessageinfoifargisnotsomecases-issue]]
 - [ ] test layer
 ```rs
 static DFX_CFG: &str = r#"
