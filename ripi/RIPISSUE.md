@@ -6,8 +6,7 @@
 
 <!-- tocstop -->
 
-- [ ] [[addmessageinfoifargisnotsomecases-issue]]
-- [ ] test layer
+- [ ] implement basic tests
 ```rs
 static DFX_CFG: &str = r#"
     {
