@@ -1,5 +1,4 @@
 use std::{
-    collections::HashMap,
     env::{current_dir, set_current_dir},
     fs::{read_to_string, remove_file},
     path::PathBuf,
@@ -11,12 +10,9 @@ use anyhow::{anyhow, Context, Result};
 use candid_gen::{
     functions::{
         build_wasm32::build_wasm32, gen_candid::gen_candid,
-        get_candid_path_str::get_candid_path_str, run_command::run_command,
+        get_candid_path_str::get_candid_path_str,
     },
-    types::{
-        canisters::Canisters,
-        dfx_cfg::{DfxCfg, RustCanisterCfg},
-    },
+    types::{canisters::Canisters, dfx_cfg::DfxCfg},
     BUILD_OUTPUT_DIR,
 };
 use candid_parser::{Error, IDLProg};

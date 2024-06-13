@@ -1,11 +1,9 @@
 use anyhow::{anyhow, Context, Result};
 use candid_gen::functions::build_wasm32::build_wasm32;
-use candid_gen::functions::run_command::run_command;
 use candid_gen::types::canisters::Canisters;
 use candid_gen::types::dfx_cfg::{DfxCfg, RustCanisterCfg};
 use candid_gen::BUILD_OUTPUT_DIR;
 use once_cell::sync::Lazy;
-use serial_test::serial;
 use std::collections::HashMap;
 use std::env::{current_dir, set_current_dir};
 use std::fs::{read_to_string, remove_file};
@@ -50,7 +48,6 @@ fn test_build_wasm32_success() -> Result<()> {
 }
 
 #[test]
-// #[serial]
 fn test_build_wasm32_failure() -> Result<()> {
     let project_root = MOCK_PROJECT_DIR.lock().unwrap();
     set_current_dir(&*project_root)?;

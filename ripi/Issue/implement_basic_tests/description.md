@@ -1,6 +1,6 @@
 # implement_basic_tests (Issue)
 
-- [ ] review / refactor integration tests with mock_project
+- [x] review / refactor integration tests with mock_project
   - test removing serial from tests
 - [x] fix if let Err(e) = run_command(&format!("rm {}", &wasm_file.display())) {
   - substitute with remove_file
