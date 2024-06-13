@@ -48,7 +48,7 @@ mod tests {
             "test1".to_string(),
             RustCanisterCfg {
                 package: "test1".to_string(),
-                candid: "src/test1/test1.did".to_string(),
+                candid_file_path_str: "src/test1/test1.did".to_string(),
                 other: HashMap::new(),
             },
         );
@@ -56,7 +56,7 @@ mod tests {
             "test2".to_string(),
             RustCanisterCfg {
                 package: "test2".to_string(),
-                candid: "src/test2/test2.did".to_string(),
+                candid_file_path_str: "src/test2/test2.did".to_string(),
                 other: HashMap::new(),
             },
         );
@@ -77,7 +77,7 @@ mod tests {
             "test1".to_string(),
             RustCanisterCfg {
                 package: "test1".to_string(),
-                candid: "src/test1/test1.did".to_string(),
+                candid_file_path_str: "src/test1/test1.did".to_string(),
                 other: HashMap::new(),
             },
         );
@@ -85,7 +85,7 @@ mod tests {
             "test2".to_string(),
             RustCanisterCfg {
                 package: "test2".to_string(),
-                candid: "src/test2/test2.did".to_string(),
+                candid_file_path_str: "src/test2/test2.did".to_string(),
                 other: HashMap::new(),
             },
         );
@@ -104,7 +104,7 @@ mod tests {
             "test1".to_string(),
             RustCanisterCfg {
                 package: "test1".to_string(),
-                candid: "src/test1/test1.did".to_string(),
+                candid_file_path_str: "src/test1/test1.did".to_string(),
                 other: HashMap::new(),
             },
         );
@@ -112,7 +112,7 @@ mod tests {
             "test2".to_string(),
             RustCanisterCfg {
                 package: "test2".to_string(),
-                candid: "src/test2/test2.did".to_string(),
+                candid_file_path_str: "src/test2/test2.did".to_string(),
                 other: HashMap::new(),
             },
         );

@@ -3,8 +3,9 @@
 - [ ] gen_candid
   - pass just the canister
   - integration tests
+    - [x] fail 2: at get_candid_path... dir do not exist
+      - implemented create_dir_all to garantee that the dir structure will exist
     - [x] fail 1: dir exist, but binary/wasm doesn't
-    - fail 2: at get_candid_path... dir do not exist
     - test file existence
     - test if generated file correctly parses
     - rm gen files

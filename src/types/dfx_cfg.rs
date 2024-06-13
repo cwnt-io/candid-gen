@@ -12,7 +12,7 @@ use super::canisters::Canisters;
 #[derive(Deserialize, Debug, Clone, PartialEq)]
 pub struct RustCanisterCfg {
     pub package: String,
-    pub candid: String,
+    pub candid_file_path_str: String,
     #[serde(flatten)]
     pub other: HashMap<String, serde_json::Value>,
 }
@@ -21,7 +21,7 @@ impl RustCanisterCfg {
     pub fn new(canister_name: &str) -> Self {
         RustCanisterCfg {
             package: canister_name.to_owned(),
-            candid: format!("src/{}/{}.did", canister_name, canister_name),
+            candid_file_path_str: format!("src/{}/{}.did", canister_name, canister_name),
             other: HashMap::default(),
         }
     }
@@ -97,7 +97,10 @@ mod tests {
     fn test_rust_canister_cfg_new() {
         let canister = RustCanisterCfg::new("test_canister");
         assert_eq!(canister.package, "test_canister");
-        assert_eq!(canister.candid, "src/test_canister/test_canister.did");
+        assert_eq!(
+            canister.candid_file_path_str,
+            "src/test_canister/test_canister.did"
+        );
         assert!(canister.other.is_empty());
     }
 
@@ -125,7 +128,10 @@ mod tests {
 
         let canister = dfx_cfg.canisters.0.get("test_canister").unwrap();
         assert_eq!(canister.package, "test_canister");
-        assert_eq!(canister.candid, "src/test_canister/test_canister.did");
+        assert_eq!(
+            canister.candid_file_path_str,
+            "src/test_canister/test_canister.did"
+        );
         assert!(canister.other.get("type").is_some());
     }
 }

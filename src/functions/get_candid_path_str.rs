@@ -1,21 +1,24 @@
-use std::path::Path;
+use std::{fs::create_dir_all, path::Path};
 
 use anyhow::{anyhow, Result};
 
 use crate::types::dfx_cfg::RustCanisterCfg;
 
 pub fn get_candid_path_str(project_root: &Path, canister: &RustCanisterCfg) -> Result<String> {
-    let candid_path = project_root.join(&canister.candid);
-    if !candid_path
-        .parent()
-        .is_some_and(|p| p.is_dir() && p.to_str().unwrap().contains(&canister.package))
+    let candid_file_path = project_root.join(&canister.candid_file_path_str);
+    let candid_file_dir = candid_file_path.parent().unwrap();
+    create_dir_all(candid_file_dir)?;
+    if !candid_file_dir
+        .to_str()
+        .unwrap()
+        .contains(&canister.package)
     {
         return Err(anyhow!(
             "fn gen_candid_path_str: Could not find the candid dir."
         ));
     }
-    let candid_str = candid_path.to_str().unwrap().to_string();
-    Ok(candid_str)
+    let candid_file_path_str = candid_file_path.to_str().unwrap().to_string();
+    Ok(candid_file_path_str)
 }
 
 #[cfg(test)]
@@ -70,7 +73,7 @@ mod tests {
             .expect("Failed to set temp_dir as the current dir and project_root.");
         let canister = RustCanisterCfg {
             package: "test".to_string(),
-            candid: "".to_string(),
+            candid_file_path_str: "".to_string(),
             other: HashMap::new(),
         };
 
@@ -90,7 +93,7 @@ mod tests {
             .expect("Failed to set temp_dir as the current dir and project_root.");
         let canister = RustCanisterCfg {
             package: "test".to_string(),
-            candid: "subdir/test/test.did".to_string(),
+            candid_file_path_str: "subdir/test/test.did".to_string(),
             other: HashMap::new(),
         };
         let candid_dir = temp_dir.path().join("subdir/test/");

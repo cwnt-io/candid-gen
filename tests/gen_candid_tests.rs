@@ -107,7 +107,7 @@ fn test_gen_candid_failure_nonexistent_canister() -> Result<()> {
 
     let canister = RustCanisterCfg {
         package: "nonexistent_canister".to_string(),
-        candid: "src/nonexistent_canister/nonexistent_canister.did".to_string(),
+        candid_file_path_str: "src/nonexistent_canister/nonexistent_canister.did".to_string(),
         other: HashMap::new(),
     };
 
