@@ -2,7 +2,7 @@ use std::path::Path;
 
 use anyhow::{anyhow, Result};
 
-use crate::dfx_cfg::RustCanisterCfg;
+use crate::types::dfx_cfg::RustCanisterCfg;
 
 pub fn get_candid_path_str(project_root: &Path, canister: &RustCanisterCfg) -> Result<String> {
     let candid_path = project_root.join(&canister.candid);

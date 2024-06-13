@@ -4,10 +4,12 @@ use std::collections::HashMap;
 use anyhow::Result;
 use serde::{
     de::{MapAccess, Visitor},
-    Deserialize, Deserializer, Serialize,
+    Deserialize, Deserializer,
 };
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+use super::canisters::Canisters;
+
+#[derive(Deserialize, Debug, Clone, PartialEq)]
 pub struct RustCanisterCfg {
     pub package: String,
     pub candid: String,
@@ -25,9 +27,14 @@ impl RustCanisterCfg {
     }
 }
 
-#[derive(Debug, Serialize)]
+// #[derive(Debug, Serialize)]
+// pub struct DfxCfg {
+//     pub canisters: HashMap<String, RustCanisterCfg>,
+// }
+
+#[derive(Debug)]
 pub struct DfxCfg {
-    pub canisters: HashMap<String, RustCanisterCfg>,
+    pub canisters: Canisters,
 }
 
 impl<'de> Deserialize<'de> for DfxCfg {
@@ -48,7 +55,8 @@ impl<'de> Deserialize<'de> for DfxCfg {
             where
                 V: MapAccess<'de>,
             {
-                let mut canisters = HashMap::new();
+                // let mut canisters = HashMap::new();
+                let mut canisters = Canisters::new();
 
                 while let Some(key) = map.next_key::<String>()? {
                     if key == "canisters" {
@@ -61,7 +69,7 @@ impl<'de> Deserialize<'de> for DfxCfg {
                                     canister_value.get("type").and_then(|v| v.as_str())
                                 {
                                     if canister_type == "rust" {
-                                        canisters.insert(canister_name.clone(), canister);
+                                        canisters.0.insert(canister_name.clone(), canister);
                                     }
                                 }
                             }
@@ -84,7 +92,6 @@ impl<'de> Deserialize<'de> for DfxCfg {
 mod tests {
     use super::*;
     use serde_json::json;
-    use std::collections::HashMap;
 
     #[test]
     fn test_rust_canister_cfg_new() {
@@ -113,41 +120,12 @@ mod tests {
 
         let dfx_cfg: DfxCfg = serde_json::from_value(data).expect("Failed to deserialize");
 
-        assert!(dfx_cfg.canisters.contains_key("test_canister"));
-        assert!(!dfx_cfg.canisters.contains_key("non_rust_canister"));
+        assert!(dfx_cfg.canisters.0.contains_key("test_canister"));
+        assert!(!dfx_cfg.canisters.0.contains_key("non_rust_canister"));
 
-        let canister = dfx_cfg.canisters.get("test_canister").unwrap();
+        let canister = dfx_cfg.canisters.0.get("test_canister").unwrap();
         assert_eq!(canister.package, "test_canister");
         assert_eq!(canister.candid, "src/test_canister/test_canister.did");
         assert!(canister.other.get("type").is_some());
-    }
-
-    #[test]
-    fn test_dfx_cfg_serialize() {
-        let mut canisters = HashMap::new();
-        canisters.insert(
-            "test_canister".to_string(),
-            RustCanisterCfg {
-                package: "test_canister".to_string(),
-                candid: "src/test_canister/test_canister.did".to_string(),
-                other: HashMap::new(),
-            },
-        );
-
-        let dfx_cfg = DfxCfg { canisters };
-
-        let serialized = serde_json::to_string(&dfx_cfg).expect("Failed to serialize");
-        let expected = json!({
-            "canisters": {
-                "test_canister": {
-                    "package": "test_canister",
-                    "candid": "src/test_canister/test_canister.did"
-                }
-            }
-        });
-
-        let serialized_json: serde_json::Value =
-            serde_json::from_str(&serialized).expect("Failed to parse serialized JSON");
-        assert_eq!(serialized_json, expected);
     }
 }

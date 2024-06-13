@@ -1,15 +1,14 @@
-use std::{collections::HashMap, env::set_current_dir, fs::read_to_string};
+use std::{env::set_current_dir, fs::read_to_string};
 
 use anyhow::{anyhow, Context, Result};
 use candid_gen::args_options::Args;
-use candid_gen::dfx_cfg::{DfxCfg, RustCanisterCfg};
 use candid_gen::functions::get_candid_path_str::get_candid_path_str;
 use candid_gen::functions::get_project_root::get_project_root;
 use candid_gen::functions::run_command::run_command;
+use candid_gen::types::canisters::Canisters;
+use candid_gen::types::dfx_cfg::DfxCfg;
 use clap::Parser;
 use cmd_lib::run_cmd;
-
-type Canisters = HashMap<String, RustCanisterCfg>;
 
 fn main() -> Result<()> {
     run_command("rustup --version")?;
@@ -28,24 +27,8 @@ fn main() -> Result<()> {
     let dfx_cfg: DfxCfg = serde_json::from_str(&dfx_json).unwrap();
     let canisters: Canisters = dfx_cfg.canisters;
     let args = Args::parse();
-    let canisters_to_gen_candid: Canisters = match args.canisters_names {
-        Some(canisters_names) => canisters_names
-            .iter()
-            .fold(HashMap::new(), |mut map, name| {
-                if let Some(canister) = canisters.get(name) {
-                    map.insert(name.clone(), canister.clone());
-                } else {
-                    eprintln!(
-                        "candid-gen error: Not able to generate the candid file for the canister: {}.\n\
-                        Verify if it is a 'rust' canister type, or if the name is correct.\n",
-                        name
-                    );
-                }
-                map
-            }),
-        None => canisters,
-    };
-    for (canister_name, canister) in canisters_to_gen_candid.iter() {
+    let canisters_to_gen_candid: Canisters = canisters.filter(&args.canisters_names);
+    for (canister_name, canister) in canisters_to_gen_candid.0.iter() {
         if let Err(e) = run_cmd!(cargo build --release --target wasm32-unknown-unknown --package "$canister_name")
         {
             eprintln!("Failed to build the canister '{}': {}", canister_name, e);
