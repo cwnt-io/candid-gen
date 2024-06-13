@@ -2,11 +2,13 @@ use std::{env::set_current_dir, fs::read_to_string};
 
 use anyhow::{anyhow, Context, Result};
 use candid_gen::args_options::Args;
+use candid_gen::functions::build_wasm32::build_wasm32;
 use candid_gen::functions::get_candid_path_str::get_candid_path_str;
 use candid_gen::functions::get_project_root::get_project_root;
 use candid_gen::functions::run_command::run_command;
 use candid_gen::types::canisters::Canisters;
 use candid_gen::types::dfx_cfg::DfxCfg;
+use candid_gen::BUILD_OUTPUT_DIR;
 use clap::Parser;
 use cmd_lib::run_cmd;
 
@@ -29,19 +31,14 @@ fn main() -> Result<()> {
     let args = Args::parse();
     let canisters_to_gen_candid: Canisters = canisters.filter(&args.canisters_names);
     for (canister_name, canister) in canisters_to_gen_candid.0.iter() {
-        if let Err(e) = run_cmd!(cargo build --release --target wasm32-unknown-unknown --package "$canister_name")
-        {
-            eprintln!("Failed to build the canister '{}': {}", canister_name, e);
+        if let Err(e) = build_wasm32(canister) {
+            eprint!("{}", e);
             continue;
         }
-        println!(
-            "candid-gen: Canister '{}' built successfully.",
-            canister_name
-        );
         let candid = get_candid_path_str(&project_root, canister)?;
         if let Err(e) = run_cmd!(
             candid-extractor
-            "target/wasm32-unknown-unknown/release/$canister_name.wasm" >
+            "$BUILD_OUTPUT_DIR/$canister_name.wasm" >
             "$candid")
         {
             eprintln!(

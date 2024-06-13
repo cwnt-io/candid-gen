@@ -1,5 +1,8 @@
 # implement_basic_tests (Issue)
 
+- [x] build_wasm32
+  - integration tests
+- [ ] review / refactor integration tests with mock_project
 - [x] canisters_to_gen_candid
   - wrap to a function
   - unit test it
