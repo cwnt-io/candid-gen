@@ -11,6 +11,7 @@ use candid_gen::types::dfx_cfg::DfxCfg;
 use clap::Parser;
 
 fn main() -> Result<()> {
+    let args = Args::parse();
     run_command("rustup --version")?;
     run_command("cargo --version")?;
     run_command("candid-extractor --version")?;
@@ -26,7 +27,6 @@ fn main() -> Result<()> {
     let dfx_json = read_to_string(dfx_path).context("Failed to read dfx.json file")?;
     let dfx_cfg: DfxCfg = serde_json::from_str(&dfx_json).unwrap();
     let canisters: Canisters = dfx_cfg.canisters;
-    let args = Args::parse();
     let canisters_to_gen_candid: Canisters = canisters.filter(&args.canisters_names);
     for (_, canister) in canisters_to_gen_candid.0.iter() {
         if let Err(e) = build_wasm32(canister) {
