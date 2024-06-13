@@ -51,22 +51,6 @@ mod tests {
 
     #[test]
     #[serial]
-    fn test_get_candid_path_str_failure_nonexistent_dir() {
-        let temp_dir = tempdir().expect("Failed to create temp dir");
-        set_current_dir(&temp_dir)
-            .expect("Failed to set temp_dir as the current dir and project_root.");
-        let canister = RustCanisterCfg::new("nonexistent");
-
-        let result = get_candid_path_str(temp_dir.path(), &canister);
-        assert!(result.is_err());
-        assert_eq!(
-            result.unwrap_err().to_string(),
-            "fn gen_candid_path_str: Could not find the candid dir."
-        );
-    }
-
-    #[test]
-    #[serial]
     fn test_get_candid_path_str_failure_invalid_path() {
         let temp_dir = tempdir().expect("Failed to create temp dir");
         set_current_dir(&temp_dir)

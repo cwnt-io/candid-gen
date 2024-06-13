@@ -8,7 +8,7 @@ use once_cell::sync::Lazy;
 use serial_test::serial;
 use std::collections::HashMap;
 use std::env::{current_dir, set_current_dir};
-use std::fs::read_to_string;
+use std::fs::{read_to_string, remove_file};
 use std::path::PathBuf;
 use std::sync::Mutex;
 
@@ -37,12 +37,12 @@ fn test_build_wasm32_success() -> Result<()> {
     let canisters: Canisters = dfx_cfg.canisters;
     if let Some((canister_name, canister)) = canisters.0.iter().next() {
         let wasm_file = build_output_path.join(format!("{}.wasm", canister_name));
-        if let Err(e) = run_command(&format!("rm {}", &wasm_file.display())) {
+        if let Err(e) = remove_file(&wasm_file) {
             eprintln!("{} already deleted: {}", &wasm_file.display(), e);
         };
         build_wasm32(canister)?;
         assert!(wasm_file.exists(), "Build output should exist");
-        run_command(&format!("rm {}", &wasm_file.display()))?;
+        remove_file(&wasm_file)?;
     } else {
         return Err(anyhow!("No rust canister found at {}.", dfx_path.display()));
     }

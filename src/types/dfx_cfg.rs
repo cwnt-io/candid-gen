@@ -12,6 +12,7 @@ use super::canisters::Canisters;
 #[derive(Deserialize, Debug, Clone, PartialEq)]
 pub struct RustCanisterCfg {
     pub package: String,
+    #[serde(rename = "candid")]
     pub candid_file_path_str: String,
     #[serde(flatten)]
     pub other: HashMap<String, serde_json::Value>,
@@ -26,11 +27,6 @@ impl RustCanisterCfg {
         }
     }
 }
-
-// #[derive(Debug, Serialize)]
-// pub struct DfxCfg {
-//     pub canisters: HashMap<String, RustCanisterCfg>,
-// }
 
 #[derive(Debug)]
 pub struct DfxCfg {
@@ -122,6 +118,8 @@ mod tests {
         });
 
         let dfx_cfg: DfxCfg = serde_json::from_value(data).expect("Failed to deserialize");
+
+        println!("{:#?}", dfx_cfg);
 
         assert!(dfx_cfg.canisters.0.contains_key("test_canister"));
         assert!(!dfx_cfg.canisters.0.contains_key("non_rust_canister"));

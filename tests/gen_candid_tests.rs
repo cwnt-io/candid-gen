@@ -47,12 +47,12 @@ fn test_gen_candid_success() -> Result<()> {
     let canisters: Canisters = dfx_cfg.canisters;
     if let Some((canister_name, canister)) = canisters.0.iter().next() {
         let wasm_file = build_output_path.join(format!("{}.wasm", canister_name));
-        if let Err(e) = run_command(&format!("rm {}", &wasm_file.display())) {
+        if let Err(e) = remove_file(&wasm_file) {
             eprintln!("{} already deleted: {}", &wasm_file.display(), e);
         };
         build_wasm32(canister)?;
         let candid_path = PathBuf::from_str(&get_candid_path_str(&project_root, canister)?)?;
-        if let Err(e) = run_command(&format!("rm {}", &candid_path.display())) {
+        if let Err(e) = remove_file(&candid_path) {
             eprintln!("{} already deleted: {}", &wasm_file.display(), e);
         };
         gen_candid(&project_root, canister)?;
@@ -60,7 +60,7 @@ fn test_gen_candid_success() -> Result<()> {
         let candid_file = read_to_string(&candid_path).context("Failed to read candid file")?;
         let ast: Result<IDLProg, Error> = candid_file.parse();
         assert!(ast.is_ok(), "Build output should exist");
-        run_command(&format!("rm {}", &candid_path.display()))?;
+        remove_file(&candid_path)?;
     } else {
         return Err(anyhow!("No rust canister found at {}.", dfx_path.display()));
     }
@@ -97,24 +97,5 @@ fn test_gen_candid_failure_nonexistent_wasm() -> Result<()> {
     } else {
         return Err(anyhow!("No rust canister found at {}.", dfx_path.display()));
     }
-    Ok(())
-}
-
-#[test]
-fn test_gen_candid_failure_nonexistent_canister() -> Result<()> {
-    let project_root = MOCK_PROJECT_DIR.lock().unwrap();
-    set_current_dir(&*project_root)?;
-
-    let canister = RustCanisterCfg {
-        package: "nonexistent_canister".to_string(),
-        candid_file_path_str: "src/nonexistent_canister/nonexistent_canister.did".to_string(),
-        other: HashMap::new(),
-    };
-
-    let candid_file_path_str_result = get_candid_path_str(&project_root, &canister);
-    assert!(
-        candid_file_path_str_result.is_err(),
-        "Candid path doesn't exists."
-    );
     Ok(())
 }

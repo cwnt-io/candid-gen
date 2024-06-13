@@ -1,20 +1,19 @@
 # implement_basic_tests (Issue)
 
-- [ ] gen_candid
+- [ ] review / refactor integration tests with mock_project
+  - test removing serial from tests
+- [x] fix if let Err(e) = run_command(&format!("rm {}", &wasm_file.display())) {
+  - substitute with remove_file
+- [x] gen_candid
   - pass just the canister
   - integration tests
     - [x] fail 2: at get_candid_path... dir do not exist
       - implemented create_dir_all to garantee that the dir structure will exist
     - [x] fail 1: dir exist, but binary/wasm doesn't
     - test file existence
-    - test if generated file correctly parses
     - rm gen files
-- [ ] fix if let Err(e) = run_command(&format!("rm {}", &wasm_file.display())) {
-  - substitute with remove_file
 - [x] build_wasm32
   - integration tests
-- [ ] review / refactor integration tests with mock_project
-  - test removing serial from tests
 - [x] canisters_to_gen_candid
   - wrap to a function
   - unit test it
