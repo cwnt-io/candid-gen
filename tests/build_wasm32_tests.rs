@@ -16,7 +16,6 @@ static MOCK_PROJECT_DIR: Lazy<Mutex<PathBuf>> =
     Lazy::new(|| Mutex::new(current_dir().unwrap().join("tests/mock_project")));
 
 #[test]
-// #[serial]
 fn test_mock_project_dir() -> Result<()> {
     let mock_project_dir = MOCK_PROJECT_DIR.lock().unwrap();
     let cargo_toml = mock_project_dir.join("Cargo.toml");
@@ -28,7 +27,6 @@ fn test_mock_project_dir() -> Result<()> {
 }
 
 #[test]
-// #[serial]
 fn test_build_wasm32_success() -> Result<()> {
     let project_root = MOCK_PROJECT_DIR.lock().unwrap();
     set_current_dir(&*project_root)?;

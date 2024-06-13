@@ -3,14 +3,12 @@ use std::{env::set_current_dir, fs::read_to_string};
 use anyhow::{anyhow, Context, Result};
 use candid_gen::args_options::Args;
 use candid_gen::functions::build_wasm32::build_wasm32;
-use candid_gen::functions::get_candid_path_str::get_candid_path_str;
+use candid_gen::functions::gen_candid::gen_candid;
 use candid_gen::functions::get_project_root::get_project_root;
 use candid_gen::functions::run_command::run_command;
 use candid_gen::types::canisters::Canisters;
 use candid_gen::types::dfx_cfg::DfxCfg;
-use candid_gen::BUILD_OUTPUT_DIR;
 use clap::Parser;
-use cmd_lib::run_cmd;
 
 fn main() -> Result<()> {
     run_command("rustup --version")?;
@@ -30,26 +28,12 @@ fn main() -> Result<()> {
     let canisters: Canisters = dfx_cfg.canisters;
     let args = Args::parse();
     let canisters_to_gen_candid: Canisters = canisters.filter(&args.canisters_names);
-    for (canister_name, canister) in canisters_to_gen_candid.0.iter() {
+    for (_, canister) in canisters_to_gen_candid.0.iter() {
         if let Err(e) = build_wasm32(canister) {
             eprint!("{}", e);
             continue;
         }
-        let candid = get_candid_path_str(&project_root, canister)?;
-        if let Err(e) = run_cmd!(
-            candid-extractor
-            "$BUILD_OUTPUT_DIR/$canister_name.wasm" >
-            "$candid")
-        {
-            eprintln!(
-                "Failed to extract candid for the canister '{}': {}",
-                canister_name, e
-            );
-        }
-        println!(
-            "candid-gen: Canister '{}' candid file was successfully generated.",
-            canister_name
-        );
+        gen_candid(&project_root, canister)?;
     }
     Ok(())
 }
