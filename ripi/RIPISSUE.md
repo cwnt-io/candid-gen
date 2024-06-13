@@ -8,7 +8,7 @@
 
 A lightweight CLI tool for generating Candid interface definitions from Rust canisters in Internet Computer (IC) projects.
 
-- [ ] generate readme
+- [ ] config a CI with Github actions to publish a new version at crates.io
 - [ ] create github topics for this project
 - [ ] publish crates.io
   - https://doc.rust-lang.org/cargo/reference/publishing.html
