@@ -79,3 +79,75 @@ impl<'de> Deserialize<'de> for DfxCfg {
         deserializer.deserialize_struct("DfxCfg", FIELDS, DfxCfgVisitor)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde_json::json;
+    use std::collections::HashMap;
+
+    #[test]
+    fn test_rust_canister_cfg_new() {
+        let canister = RustCanisterCfg::new("test_canister");
+        assert_eq!(canister.package, "test_canister");
+        assert_eq!(canister.candid, "src/test_canister/test_canister.did");
+        assert!(canister.other.is_empty());
+    }
+
+    #[test]
+    fn test_dfx_cfg_deserialize() {
+        let data = json!({
+            "canisters": {
+                "test_canister": {
+                    "package": "test_canister",
+                    "candid": "src/test_canister/test_canister.did",
+                    "type": "rust"
+                },
+                "non_rust_canister": {
+                    "package": "non_rust_canister",
+                    "candid": "src/non_rust_canister/non_rust_canister.did",
+                    "type": "non_rust"
+                }
+            }
+        });
+
+        let dfx_cfg: DfxCfg = serde_json::from_value(data).expect("Failed to deserialize");
+
+        assert!(dfx_cfg.canisters.contains_key("test_canister"));
+        assert!(!dfx_cfg.canisters.contains_key("non_rust_canister"));
+
+        let canister = dfx_cfg.canisters.get("test_canister").unwrap();
+        assert_eq!(canister.package, "test_canister");
+        assert_eq!(canister.candid, "src/test_canister/test_canister.did");
+        assert!(canister.other.get("type").is_some());
+    }
+
+    #[test]
+    fn test_dfx_cfg_serialize() {
+        let mut canisters = HashMap::new();
+        canisters.insert(
+            "test_canister".to_string(),
+            RustCanisterCfg {
+                package: "test_canister".to_string(),
+                candid: "src/test_canister/test_canister.did".to_string(),
+                other: HashMap::new(),
+            },
+        );
+
+        let dfx_cfg = DfxCfg { canisters };
+
+        let serialized = serde_json::to_string(&dfx_cfg).expect("Failed to serialize");
+        let expected = json!({
+            "canisters": {
+                "test_canister": {
+                    "package": "test_canister",
+                    "candid": "src/test_canister/test_canister.did"
+                }
+            }
+        });
+
+        let serialized_json: serde_json::Value =
+            serde_json::from_str(&serialized).expect("Failed to parse serialized JSON");
+        assert_eq!(serialized_json, expected);
+    }
+}

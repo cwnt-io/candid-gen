@@ -1,5 +1,8 @@
 # implement_basic_tests (Issue)
 
+- [ ] canisters_to_gen_candid
+  - wrap to a function
+  - unit test it
 - [x] get_candid_path_str
 - [x] get_project_root
 - [x] run_command tests
