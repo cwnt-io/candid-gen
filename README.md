@@ -2,7 +2,7 @@
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/cwnt-io/candid-gen)
 ![GitHub](https://img.shields.io/github/license/cwnt-io/candid-gen)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cwnt-io/candid-gen/rust.yml)
+<!-- ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cwnt-io/candid-gen/rust.yml) -->
 
 <!-- toc -->
 
