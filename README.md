@@ -48,13 +48,20 @@
 
 ### Installing
 
-To install `candid-gen`, you can clone the repository and build the project:
+To install `candid-gen`, you can use `cargo install` to install the latest release published at `crates.io`:
+
+```sh
+cargo install candid-gen
+```
+
+Or you can clone the repository and build the project from the master branch:
 
 ```sh
 git clone https://github.com/cwnt-io/candid-gen.git
 cd candid-gen
 cargo install --path .
 ```
+
 
 ## Usage
 
@@ -130,7 +137,7 @@ To set up a development environment:
 
 ## License
 
-This project is licensed under the terms of the MIT license. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the terms of the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
 
 ## Authors
 
